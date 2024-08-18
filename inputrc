@@ -1,0 +1,66 @@
+## https://linux.die.net/man/3/readline
+
+# Disable terminal bell
+set bell-style none
+# Ignore case for completion
+set completion-ignore-case on
+# Shorten common prefix in autocomplete suggestions
+set completion-prefix-display-length 3
+# Ask if more than X possible completions
+set completion-query-items 50
+# Turn off 8th bit stripping
+set convert-meta off
+# Do not expand tilde
+set expand-tilde off
+# Enable eight-bit input
+set input-meta on
+# Complete directories with /
+set mark-directories on
+# Complete symlinks to directories with /
+set mark-symlinked-directories on
+# Keep the 8th bit for display
+set output-meta on
+# List autocomplete options with one press
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+
+## Search history older
+# Up
+"\e[A":history-search-backward
+# Page up
+"\e[5~":history-search-backward
+
+## Search history newer
+# Down
+"\e[B":history-search-forward
+# Page down
+"\e[6~":history-search-forward
+
+## Jump word right
+# CTRL + Right
+"\e[1;5C":forward-word
+# ALT + Right
+"\e[1;3C":forward-word
+
+## Jump word left
+# CTRL + Left
+"\e[1;5D":backward-word
+# ALT + Left
+"\e[1;3D":backward-word
+
+## Clear line
+# Escape -> Escape
+"\e\e":kill-whole-line
+
+## Paste
+# Insert
+"\e[2~":paste-from-clipboard
+
+## Remove word right of cursor
+# ALT + Delete
+"\e\e[3~":kill-word
+
+## Remove word left of cursor
+# CTRL + Backspace
+"\C-H":""
