@@ -30,6 +30,10 @@ curl -so ${HOME}/.shell/bashrc https://raw.githubusercontent.com/RobinRodenhause
 curl -so ${HOME}/.shell/inputrc https://raw.githubusercontent.com/RobinRodenhausen/shell/main/inputrc
 
 mkdir -p ${HOME}/.shell/bash_profile.d/
+
+curl -so ${HOME}/.shell/bash_profile.d/00_log.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bash_profile.d/00_log.sh
+curl -so ${HOME}/.shell/bash_profile.d/01_pshell.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bash_profile.d/01_pshell.sh
+
 mkdir -p ${HOME}/.shell/bashrc.d/
 mkdir -p ${HOME}/.shell/bash-completion.d/
 
