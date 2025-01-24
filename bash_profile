@@ -33,14 +33,15 @@ export GIT_PS1_SHOWDIRTYSTATE=1
 export IGNOREEOF=1
 
 ### History
-export HISTCONTROL=ignoredups:erasedups:ignorespace
+export HISTCONTROL=ignoreboth:erasedups
 ## Set history filesize to unlimited
 export HISTFILESIZE=
 export HISTSIZE=
 ## Set history file location
 export HISTFILE=~/.bash_eternal_history
 ## Support history in multiple shell sessions
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+# https://unix.stackexchange.com/a/18443
+export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 ## Add Timestamps to history
 export HISTTIMEFORMAT='[%Y-%m-%d %H:%M:%S] '
 
