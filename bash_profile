@@ -1,20 +1,39 @@
 function source_file {
+    # Check if the file exists before sourcing it
     if [[ -f "$1" ]]; then
         source $1
     fi
 }
 
-### Command Prompt
-# Get username for prompt
-PROMPTUSER=${USER-$USERNAME}
-if [ -z "$PROMPTUSER" ]; then
-    PROMPTUSER=$(whoami)
-fi
-PROMPTUSER=${PROMPTUSER,,}
+function cleanup_history() {
+    # Create a temporary file with unique entries (preserving timestamps)
+    tac "${HISTFILE}" | awk '
+    NR % 2 == 1 {
+        # Odd line numbers are commands (when reversed)
+        command = $0
+        next
+    }
+    NR % 2 == 0 {
+        # Even line numbers are timestamps (when reversed)
+        timestamp = $0
+        if (!seen[command]++) {
+            print command
+            print timestamp
+        }
+    }
+    ' | tac > ${HISTFILE}.tmp
+    # Only replace content because container mounted file cannot be (re)moved
+    cat ${HISTFILE}.tmp > "${HISTFILE}"
+    rm ${HISTFILE}.tmp
+    history -c
+    history -r
+}
 
-# Get hostname for prompt
-PROMPTHOST=$(hostname -s)
-PROMPTHOST=${PROMPTHOST,,}
+alias hclear=cleanup_history
+
+# Command Prompt
+PROMPTUSER=$(whoami | tr '[:upper:]' '[:lower:]')
+PROMPTHOST=$(hostname -s | tr '[:upper:]' '[:lower:]')
 
 ### Prompt explanation
 # \n - Add additional new line for better readability
@@ -22,28 +41,31 @@ PROMPTHOST=${PROMPTHOST,,}
 # ${PROMPTUSER}@${PROMPTHOST} - user@host
 # \[$(tput sgr0)\] - Rest of the line in white
 # $(pwd) - Current working directory
-# $(date +"%Y-%m-%d %H:%M:%S") - Current data & time
+# $(date +"%Y-%m-%d %H:%M:%S") - Current date & time
 # $(__git_ps1) - Current Git branch (requires git bash completion)
 # \n\$ - actual command prompt in new line
-export PS1='\n\[$([ $? = 0 ] && F=0 B=2 || F=3 B=1; tput setaf $F; tput setab $B)\]${PROMPTUSER}@${PROMPTHOST}\[$(tput sgr0)\]$(pwd) - $(date +"%Y-%m-%d %H:%M:%S")$(__git_ps1)\n\$ '
-export GIT_PS1_SHOWDIRTYSTATE=1
+PS1='\n\[$([ $? = 0 ] && F=0 B=2 || F=3 B=1; tput setaf $F; tput setab $B)\]${PROMPTUSER}@${PROMPTHOST}\[$(tput sgr0)\]$(pwd) - $(date +"%Y-%m-%d %H:%M:%S")$(__git_ps1)\n\$ '
+GIT_PS1_SHOWDIRTYSTATE=1
 
-### Shell behaivior
-# Requires STRG + D twice to end shell
-export IGNOREEOF=1
+# Shell behavior
+## Requires STRG + D twice to exit shell
+IGNOREEOF=1
 
-### History
-export HISTCONTROL=ignoreboth:erasedups
-## Set history filesize to unlimited
-export HISTFILESIZE=
-export HISTSIZE=
+# History
+HISTCONTROL=ignoreboth:erasedups
 ## Set history file location
-export HISTFILE=~/.bash_eternal_history
-## Support history in multiple shell sessions
-# https://unix.stackexchange.com/a/18443
-export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+HISTFILE=~/.bash_eternal_history
+## Set history filesize to unlimited
+HISTFILESIZE=
+HISTSIZE=
+## Ignore commands that start with history
+HISTIGNORE=history*:
 ## Add Timestamps to history
-export HISTTIMEFORMAT='[%Y-%m-%d %H:%M:%S] '
+HISTTIMEFORMAT='[%Y-%m-%d %H:%M:%S] '
+## Share history between multiple shell sessions
+PROMPT_COMMAND="history -a; history -n;"
+## cleanup history duplicates on exit and only keep the latest entry
+trap cleanup_history EXIT
 
 # Add personal bin folders to PATH
 export PATH=${HOME}/.local/bin:${PATH}
