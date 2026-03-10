@@ -15,4 +15,3 @@ function warning {
 function info {
     log INFO $@
 }
-
