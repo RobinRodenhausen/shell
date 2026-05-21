@@ -11,9 +11,10 @@ function source_files_in_dir {
 
     [[ -d "${search_dir}" ]] || return 0
 
-    while IFS= read -r file; do
+    # Read paths from fd 3 so sourced files keep the shell's stdin.
+    while IFS= read -r -u 3 file; do
         source_file "${file}" || echo "Failed to load ${file}" >&2
-    done < <(find "${search_dir}" -type f \( -name '*.sh' -o -name '*.bash' \) | sort)
+    done 3< <(find "${search_dir}" -type f \( -name '*.sh' -o -name '*.bash' \) | sort)
 }
 
 # Add personal bin folders to PATH
