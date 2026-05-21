@@ -29,16 +29,15 @@ curl -so ${HOME}/.shell/bash_profile https://raw.githubusercontent.com/RobinRode
 curl -so ${HOME}/.shell/bashrc https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bashrc
 curl -so ${HOME}/.shell/inputrc https://raw.githubusercontent.com/RobinRodenhausen/shell/main/inputrc
 
-mkdir -p ${HOME}/.shell/bash_profile.d/
+mkdir -p ${HOME}/.shell/bash_profile.d/ ${HOME}/.shell/bashrc.d/ ${HOME}/.shell/bash-completion.d/
 
-curl -so ${HOME}/.shell/bash_profile.d/00_log.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bash_profile.d/00_log.sh
-curl -so ${HOME}/.shell/bash_profile.d/00_unset_aws_variables.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/refs/heads/main/bash_profile.d/00_unset_aws_variables.sh
-curl -so ${HOME}/.shell/bash_profile.d/01_assume_aws_role.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/refs/heads/main/bash_profile.d/01_assume_aws_role.sh
-curl -so ${HOME}/.shell/bash_profile.d/01_pshell.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bash_profile.d/01_pshell.sh
-curl -so ${HOME}/.shell/bash_profile.d/01_vscode.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bash_profile.d/01_vscode.sh
-
-mkdir -p ${HOME}/.shell/bashrc.d/
-mkdir -p ${HOME}/.shell/bash-completion.d/
+curl -so ${HOME}/.shell/bashrc.d/00_gpg_ssh_agent.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bashrc.d/00_gpg_ssh_agent.sh
+curl -so ${HOME}/.shell/bashrc.d/00_log.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bashrc.d/00_log.sh
+curl -so ${HOME}/.shell/bashrc.d/00_unset_aws_variables.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/refs/heads/main/bashrc.d/00_unset_aws_variables.sh
+curl -so ${HOME}/.shell/bashrc.d/01_assume_aws_role.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/refs/heads/main/bashrc.d/01_assume_aws_role.sh
+curl -so ${HOME}/.shell/bashrc.d/01_pshell.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bashrc.d/01_pshell.sh
+curl -so ${HOME}/.shell/bashrc.d/01_vscode.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bashrc.d/01_vscode.sh
+curl -so ${HOME}/.shell/bashrc.d/01_yubikey_reminder.sh https://raw.githubusercontent.com/RobinRodenhausen/shell/main/bashrc.d/01_yubikey_reminder.sh
 
 curl -so ${HOME}/.shell/bash-completion.d/git-completion.bash https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 curl -so ${HOME}/.shell/bash-completion.d/git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
