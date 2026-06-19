@@ -12,6 +12,12 @@ if [[ -z "${YUBIKEY_REMINDER_DISABLE:-}" ]]; then
   }
 
   git() {
+    # Skip reminder during bash completion
+    if [[ -n "${COMP_LINE:-}" ]]; then
+      command git "$@"
+      return $?
+    fi
+
     case "$1" in
       commit|merge|tag|rebase|cherry-pick|revert|am|push|pull|fetch|clone|ls-remote|remote|submodule)
         _yk_remind
